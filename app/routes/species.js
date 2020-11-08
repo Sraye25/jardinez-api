@@ -1,6 +1,6 @@
 module.exports = app => {
     const species = require("../controllers/species.js");
-  
+
     // Create a new species
     app.post("/species", species.create);
   
@@ -12,7 +12,10 @@ module.exports = app => {
   
     // Update a species with speciesId
     app.put("/species/:speciesId", species.update);
-  
-    // Delete a species with speciesId
-    app.delete("/species/:speciesId", species.delete);
+
+    // Create a new variety
+    app.post("/species/:speciesId/varieties", species.createVariety);
+
+    // Get all varieties from species
+    app.get("/species/:speciesId/varieties", species.findVarietiesFromSpecies);
 };

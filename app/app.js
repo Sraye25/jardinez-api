@@ -16,6 +16,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/species.js")(app);
+require("./routes/varieties.js")(app);
 
 // set port, listen for requests
 app.listen(port, () => {

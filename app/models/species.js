@@ -7,19 +7,23 @@ const Species = function(species) {
 };
 
 Species.create = (newSpecies, result) => {
-    sql.query("INSERT INTO species (name, description) VALUES ($1, $2)", [newSpecies.name, newSpecies.description], (err, res) => {
+    sql.query("INSERT INTO species (name, description) VALUES ($1, $2) RETURNING *", [newSpecies.name, newSpecies.description], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
 
-        result(null, { id: res.insertId, ...newSpecies });
+        if (res.rows.length) {
+            result(null, res.rows[0]);
+        } else {
+            result(null, null);
+        }
     });
 };
 
 Species.findById = (speciesId, result) => {
-    sql.query(`SELECT * FROM species WHERE id = ${speciesId}`, (err, res) => {
+    sql.query("SELECT * FROM species WHERE id = $1", [speciesId], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -47,26 +51,7 @@ Species.getAll = result => {
 };
 
 Species.updateById = (id, species, result) => {
-    sql.query("UPDATE species SET name = $1, description = $2 WHERE id = $3",
-        [species.name, species.description, id],
-        (err, res) => {
-            if (err) {
-                console.log("error: ", err);
-                result(null, err);
-                return;
-            }
-
-            if (res.affectedRows == 0) {
-                result(null, null);
-            } else {
-                result(null, { id: id, ...species });
-            }
-        }
-    );
-};
-
-Species.remove = (id, result) => {
-    sql.query("DELETE FROM species WHERE id = $1", [id], (err, res) => {
+    sql.query("UPDATE species SET name = $1, description = $2 WHERE id = $3", [species.name, species.description, id], (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
@@ -76,7 +61,7 @@ Species.remove = (id, result) => {
         if (res.affectedRows == 0) {
             result(null, null);
         } else {
-            result(null, {"id": id});
+            result(null, { id: id, ...species });
         }
     });
 };

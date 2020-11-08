@@ -8,15 +8,15 @@ CREATE TABLE IF NOT EXISTS species (
 
 CREATE TABLE IF NOT EXISTS varieties (
     id SERIAL PRIMARY KEY,
-    species_id INTEGER REFERENCES species(id),
+    species_id INTEGER REFERENCES species(id) NOT NULL,
     name VARCHAR NOT NULL,
     description VARCHAR NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS varietyAssociations (
     id SERIAL PRIMARY KEY,
-    variety1_id INTEGER REFERENCES varieties(id),
-    variety2_id INTEGER REFERENCES varieties(id)
+    variety1_id INTEGER REFERENCES varieties(id) NOT NULL,
+    variety2_id INTEGER REFERENCES varieties(id) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS climates (
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS climates (
 
 CREATE TABLE IF NOT EXISTS varietyTimes (
     id SERIAL PRIMARY KEY,
-    variety_id INTEGER REFERENCES varieties(id),
-    climate_id INTEGER REFERENCES climates(id),
+    variety_id INTEGER REFERENCES varieties(id) NOT NULL,
+    climate_id INTEGER REFERENCES climates(id) NOT NULL,
     seedingIndoorBegin INTEGER,
     seedingIndoorEnd INTEGER,
     seedingOutdoorBegin INTEGER,
