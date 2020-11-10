@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS varieties (
 
 CREATE TABLE IF NOT EXISTS varietyAssociations (
     id SERIAL PRIMARY KEY,
+    weight SMALLINT NOT NULL,
     variety1_id INTEGER REFERENCES varieties(id) NOT NULL,
     variety2_id INTEGER REFERENCES varieties(id) NOT NULL
 );
